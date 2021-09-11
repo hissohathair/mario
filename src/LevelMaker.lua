@@ -22,6 +22,12 @@ function LevelMaker.generate(width, height)
     local tileset = math.random(20)
     local topperset = math.random(20)
 
+    -- track whether or not we've spawned a key/lock/goal combination
+    local keyExists = true -- TODO: not really
+    local lockExists = false
+    local flagExists = true -- TODO: not really
+    local lockColor = math.random(1, #KEYS_AND_LOCKS)
+
     -- insert blank tables into tiles for later access
     for x = 1, height do
         table.insert(tiles, {})
@@ -97,15 +103,20 @@ function LevelMaker.generate(width, height)
 
             -- chance to spawn a block
             if math.random(10) == 1 then
-                table.insert(objects,
+
+                -- where to place the block, etc.
+                local blockX = (x - 1) * TILE_SIZE
+                local blockY = (blockHeight - 1) * TILE_SIZE
+                local newObject = nil
+                if lockExists or math.random(10) > 1 then
 
                     -- jump block
-                    GameObject {
+                    newObject = GameObject {
                         texture = 'jump-blocks',
-                        x = (x - 1) * TILE_SIZE,
-                        y = (blockHeight - 1) * TILE_SIZE,
-                        width = 16,
-                        height = 16,
+                        x = blockX,
+                        y = blockY,
+                        width = TILE_SIZE,
+                        height = TILE_SIZE,
 
                         -- make it a random variant
                         frame = math.random(#JUMP_BLOCKS),
@@ -156,13 +167,38 @@ function LevelMaker.generate(width, height)
                             gSounds['empty-block']:play()
                         end
                     }
-                )
+
+                else
+                    -- lock block
+                    newObject = GameObject {
+                        texture = 'keys-and-locks',
+                        x = blockX,
+                        y = blockY,
+                        width = TILE_SIZE,
+                        height = TILE_SIZE,
+
+                        -- key and lock should be same color
+                        frame = 4 + lockColor,
+                        collidable = false,
+                        hit = false,
+                        solid = true
+                    }
+                    lockExists = true
+                end
+                table.insert(objects, newObject)
             end
         end
     end
 
     local map = TileMap(width, height)
     map.tiles = tiles
-    
-    return GameLevel(entities, objects, map)
+
+    -- check that key, lock, etc. spawned
+    if keyExists and lockExists and flagExists then
+        return GameLevel(entities, objects, map)
+    else
+        error(string.format("Level is missing critical object: key=%s, lock=%s, flag=%s", 
+            tostring(keyExists), tostring(lockExists), tostring(flagExists)))
+        love.event.quit( 255 )
+    end
 end

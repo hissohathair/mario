@@ -63,6 +63,19 @@ function GenerateTileSets(quads, setsX, setsY, sizeX, sizeY)
 end
 
 --[[
+    Returns a subset of quads from a table, for manually splitting up a tile set.
+    Note that this function assumes that `quads` is indexed numerically. Both
+    `start` and `stop` are inclusive.
+]]
+function SplitQuads(quads, start, stop)
+    local t = {}
+    for i = start, stop do
+        t[i] = quads[i]
+    end
+    return t
+end
+
+--[[
     Recursive table printing function.
     https://coronalabs.com/blog/2014/09/02/tutorial-printing-table-contents/
 ]]
