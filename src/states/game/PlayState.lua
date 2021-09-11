@@ -15,12 +15,24 @@ function PlayState:init()
     self.background = math.random(3)
     self.backgroundX = 0
 
+    -- player dimensions
+    self.width = 16
+    self.height = 20
+
     self.gravityOn = true
     self.gravityAmount = 6
 
+    -- make sure player doesn't spawn over a chasm. Only need to check the
+    -- lowest tile, which is always empty for a chasm
+    local x, y = 1, self.level.tileMap.height
+    while self.level.tileMap.tiles[y][x].id ~= TILE_ID_GROUND do
+        x = x + 1
+    end
+    local firstX = (x - 1) * self.width
+
     self.player = Player({
-        x = 16, y = 0,
-        width = 16, height = 20,
+        x = firstX, y = 0,
+        width = self.width, height = self.height,
         texture = 'green-alien',
         stateMachine = StateMachine {
             ['idle'] = function() return PlayerIdleState(self.player) end,
@@ -53,6 +65,11 @@ function PlayState:update(dt)
         self.player.x = 0
     elseif self.player.x > TILE_SIZE * self.tileMap.width - self.player.width then
         self.player.x = TILE_SIZE * self.tileMap.width - self.player.width
+    end
+
+    -- allow level reset in DEBUG_MODE
+    if DEBUG_MODE and love.keyboard.wasPressed('x') then
+        gStateMachine:change('start')
     end
 end
 
