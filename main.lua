@@ -80,6 +80,14 @@ function love.update(dt)
         end
     end
 
+    -- for taking screenshots for doco
+    if DEBUG_MODE and love.keyboard.wasPressed('s') then
+        local filename = "mario_" .. os.time() .. ".png"
+        love.graphics.captureScreenshot(filename)
+        local savedir = love.filesystem.getSaveDirectory()
+        print(string.format("DEBUG: Saved screenshot to '%s/%s'", savedir, filename))
+    end
+
     love.keyboard.keysPressed = {}
 end
 
