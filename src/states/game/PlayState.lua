@@ -28,7 +28,7 @@ function PlayState:init()
     while self.level.tileMap.tiles[y][x].id ~= TILE_ID_GROUND do
         x = x + 1
     end
-    local firstX = (x - 1) * self.width
+    local firstX = (x - 1) * TILE_SIZE
 
     self.player = Player({
         x = firstX, y = 0,
