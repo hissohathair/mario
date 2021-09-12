@@ -33,7 +33,7 @@ function PlayState:init()
     self.player = Player({
         x = firstX, y = 0,
         width = self.width, height = self.height,
-        texture = 'green-alien',
+        texture = 'alien',
         stateMachine = StateMachine {
             ['idle'] = function() return PlayerIdleState(self.player) end,
             ['walking'] = function() return PlayerWalkingState(self.player) end,
