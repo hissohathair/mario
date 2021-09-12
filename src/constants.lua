@@ -53,8 +53,9 @@ PLAYER_WALK_SPEED = 60
 -- player jumping velocity
 PLAYER_JUMP_VELOCITY = -150
 
--- snail movement speed
+-- entity movement speeds
 SNAIL_MOVE_SPEED = 10
+KEY_FALL_SPEED = 20
 
 --
 -- tile IDs

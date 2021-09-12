@@ -39,4 +39,4 @@ Keys:
 
 * Most of this code was written [by Colton Ogden](https://cs50.harvard.edu/games/2018/projects/4/mario/) for the [CS50G EdX course](https://learning.edx.org/course/course-v1:HarvardX+CS50G+Games/home)
 * Using [boon](https://github.com/camchenry/boon) to package releases
-* Additional sound effects created with [Bfxr](https://www.bfxr.net/)
+* Additional sound effects created with [Bfxr](https://www.bfxr.net/), and from [OpenGameArt](https://opengameart.org/content/achievement)

@@ -42,6 +42,8 @@ require 'src/states/entity/snail/SnailChasingState'
 require 'src/states/entity/snail/SnailIdleState'
 require 'src/states/entity/snail/SnailMovingState'
 
+require 'src/states/entity/key/KeyIdleState'
+
 -- general
 require 'src/Animation'
 require 'src/Entity'
@@ -52,6 +54,7 @@ require 'src/Player'
 require 'src/Snail'
 require 'src/Tile'
 require 'src/TileMap'
+require 'src/Key'
 
 
 gSounds = {
@@ -59,6 +62,7 @@ gSounds = {
     ['death'] = love.audio.newSource('sounds/death.wav', 'static'),
     ['music'] = love.audio.newSource('sounds/music.wav', 'static'),
     ['powerup-reveal'] = love.audio.newSource('sounds/powerup-reveal.wav', 'static'),
+    ['achievement'] = love.audio.newSource('sounds/achievement.wav', 'static'),
     ['pickup'] = love.audio.newSource('sounds/pickup.wav', 'static'),
     ['empty-block'] = love.audio.newSource('sounds/empty-block.wav', 'static'),
     ['kill'] = love.audio.newSource('sounds/kill.wav', 'static'),
