@@ -188,7 +188,14 @@ function LevelMaker.generate(width, height)
                             if player.key == lockColor and not obj.hit then
                                 -- TODO: spawn actual flag and make block disappear
                                 obj.hit = true
+                                obj.collidable = false
+                                obj.solid = false
                                 gSounds['achievement']:play()
+
+                                -- make block fade away
+                                Timer.tween(0.66, {
+                                        [obj] = {alpha = 0}
+                                    })
                             else
                                 gSounds['empty-block']:play()
                             end
