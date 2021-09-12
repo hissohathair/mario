@@ -41,7 +41,7 @@ function LevelMaker.generate(width, height)
                 Tile(x, y, tileID, nil, tileset, topperset))
         end
 
-        -- chance to just be emptiness
+        -- chance to just be emptiness (chasm)
         if math.random(7) == 1 then
             for y = 7, height do
                 table.insert(tiles[y],
@@ -122,8 +122,8 @@ function LevelMaker.generate(width, height)
                         hit = false,
                         solid = true,
 
-                        -- collision function takes itself
-                        onCollide = function(obj)
+                        -- collision function takes player and itself
+                        onCollide = function(player, obj)
 
                             -- spawn a gem if we haven't already hit the block
                             if not obj.hit then
@@ -181,15 +181,12 @@ function LevelMaker.generate(width, height)
                         hit = false,
                         solid = true,
 
-                        -- TODO: colliding with lock should spawn flag if player
-                        -- as the key
-
-                        onCollide = function(obj)
-
-                            -- spawn a flag if we haven't already hit the block
-                            if not obj.hit then
-                                -- TODO: spawn actual flag, buy only if player has
-                                -- they key
+                        -- changed onCollide to take player reference
+                        onCollide = function(player, obj)
+                            -- If player has key, and hasn't hit this box already, 
+                            -- flag will spawn
+                            if player.key == lockColor and not obj.hit then
+                                -- TODO: spawn actual flag and make block disappear
                                 obj.hit = true
                                 gSounds['achievement']:play()
                             else
@@ -207,7 +204,38 @@ function LevelMaker.generate(width, height)
     local map = TileMap(width, height)
     map.tiles = tiles
 
-    -- TODO: spawn a key
+    -- Spawn a key. Make sure it's "resting" on the ground
+    local keyX = math.random(4, math.floor(width /2))
+    local keyY = 1
+    while map.tiles[keyY][keyX].id ~= TILE_ID_GROUND do
+        keyY = keyY + 1
+
+        -- this happens if the key spawned over a chasm -- try a new x position
+        if keyY >= height then
+            keyX = math.random(4, math.floor(width /2))
+            keyY = 1
+        end
+    end
+    keyY = keyY - 1  -- move up to the space above ground
+
+    -- Add key to objects table
+    table.insert(objects,
+        GameObject {
+            texture = 'keys-and-locks',
+            x = (keyX - 1) * TILE_SIZE,
+            y = (keyY - 1) * TILE_SIZE,
+            width = TILE_SIZE, height = TILE_SIZE,
+            frame = lockColor,
+            collidable = false,
+            consumable = true,
+            solid = false,
+
+            onConsume = function(player, object)
+                gSounds['pickup']:play()
+                player.key = lockColor
+            end
+        }
+    )
 
     -- check that complete level created, otherwise try again
     if lockExists and entities and objects and map then

@@ -33,7 +33,7 @@ Keys:
 # Bugs and Notes
 
 * Debug mode is turned on by setting `DEBUG_MODE` to `true` in [main.lua](main.lua)
-
+* Collision detection is slightly off still -- player has trouble falling through gaps that *should* be just wide enough
 
 # Credits
 

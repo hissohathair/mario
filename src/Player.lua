@@ -13,6 +13,7 @@ Player = Class{__includes = Entity}
 function Player:init(def)
     Entity.init(self, def)
     self.score = 0
+    self.key = 0  -- keys are numbered 1..4, 0 means "no key"
 end
 
 function Player:update(dt)
@@ -75,7 +76,7 @@ function Player:checkObjectCollisions()
             if object.solid then
                 table.insert(collidedObjects, object)
             elseif object.consumable then
-                object.onConsume(self)
+                object.onConsume(self, object)
                 table.remove(self.level.objects, k)
             end
         end

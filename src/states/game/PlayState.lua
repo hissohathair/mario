@@ -96,6 +96,12 @@ function PlayState:render()
     love.graphics.print(tostring(self.player.score), 5, 5)
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.print(tostring(self.player.score), 4, 4)
+
+    -- render key if player has it
+    if self.player.key > 0 then
+        love.graphics.draw(gTextures['keys-and-locks'], gFrames['keys'][self.player.key],
+            VIRTUAL_WIDTH - 64, 1)
+    end
 end
 
 function PlayState:updateCamera()
