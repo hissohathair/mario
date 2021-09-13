@@ -58,6 +58,7 @@ gSounds = {
     ['jump'] = love.audio.newSource('sounds/jump.wav', 'static'),
     ['death'] = love.audio.newSource('sounds/death.wav', 'static'),
     ['music'] = love.audio.newSource('sounds/music.wav', 'static'),
+    ['victory'] = love.audio.newSource('sounds/victory.mp3', 'static'),
     ['powerup-reveal'] = love.audio.newSource('sounds/powerup-reveal.wav', 'static'),
     ['pickup'] = love.audio.newSource('sounds/pickup.wav', 'static'),
     ['empty-block'] = love.audio.newSource('sounds/empty-block.wav', 'static'),
@@ -75,7 +76,9 @@ gTextures = {
     ['backgrounds'] = love.graphics.newImage('graphics/backgrounds.png'),
     ['alien'] = love.graphics.newImage('graphics/pink_alien.png'),
     ['creatures'] = love.graphics.newImage('graphics/creatures.png'),
-    ['keys-and-locks'] = love.graphics.newImage('graphics/keys_and_locks.png')
+    ['keys-and-locks'] = love.graphics.newImage('graphics/keys_and_locks.png'),
+    ['poles'] = love.graphics.newImage('graphics/flags.png'),
+    ['flags'] = love.graphics.newImage('graphics/flags.png')
 }
 
 gFrames = {
@@ -89,7 +92,9 @@ gFrames = {
     ['backgrounds'] = GenerateQuads(gTextures['backgrounds'], 256, 128),
     ['alien'] = GenerateQuads(gTextures['alien'], 16, 20),
     ['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16),
-    ['keys-and-locks'] = GenerateQuads(gTextures['keys-and-locks'], 16, 16)
+    ['keys-and-locks'] = GenerateQuads(gTextures['keys-and-locks'], 16, 16),
+    ['poles'] = GenerateQuads(gTextures['poles'], 16, 48),
+    ['flags'] = GenerateQuadsFlags(gTextures['flags'], 16, 16, 96, 3, 4)
 }
 
 -- these need to be added after gFrames is initialized because they refer to gFrames from within
@@ -98,11 +103,6 @@ gFrames['tilesets'] = GenerateTileSets(gFrames['tiles'],
 
 gFrames['toppersets'] = GenerateTileSets(gFrames['toppers'], 
     TOPPER_SETS_WIDE, TOPPER_SETS_TALL, TILE_SET_WIDTH, TILE_SET_HEIGHT)
-
--- TODO: May not need this after all
-gFrames['keys'] = SplitQuads(gFrames['keys-and-locks'], 1, 4)
-gFrames['locks'] = SplitQuads(gFrames['keys-and-locks'], 5, 8)
-
 
 gFonts = {
     ['small'] = love.graphics.newFont('fonts/font.ttf', 8),

@@ -8,8 +8,8 @@ Assignment:
 
 1. ~~When the player is dropped into the level, ensure they’re always above solid ground.~~
 2. Generate a random-colored key and lock block. The key should unlock the block when the player collides with it, triggering the block to disappear.
-3. Once the lock has disappeared, trigger a goal post to spawn at the end of the level.
-4. When the player touches this goal post, regenerate the level, and restart. The new level should be a little longer than before. 
+3. ~~Once the lock has disappeared, trigger a goal post to spawn at the end of the level.~~
+4. ~~When the player touches this goal post, regenerate the level, and restart.~~ The new level should be a little longer than before.
 
 
 # Playing

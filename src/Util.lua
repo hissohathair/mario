@@ -35,6 +35,23 @@ function GenerateQuads(atlas, tilewidth, tileheight)
 end
 
 --[[
+    Generates quads for flags, which are laid out a little differently in the
+    tilset flags.png
+]]
+function GenerateQuadsFlags(texture, tilewidth, tileheight, offsetX, frames, rows)
+    local spritesheet = {}
+    local sheetCounter = 1
+    for r = 1, rows do
+        for f = 1, frames do
+            spritesheet[sheetCounter] = love.graphics.newQuad(offsetX + (f-1) * tilewidth, (r-1) * tileheight,
+                tilewidth, tileheight, texture:getDimensions())
+            sheetCounter = sheetCounter + 1
+        end
+    end
+    return spritesheet
+end
+
+--[[
     Divides quads we've generated via slicing our tile sheet into separate tile sets.
 ]]
 function GenerateTileSets(quads, setsX, setsY, sizeX, sizeY)

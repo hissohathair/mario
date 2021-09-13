@@ -22,7 +22,7 @@
 love.graphics.setDefaultFilter('nearest', 'nearest')
 require 'src/Dependencies'
 
-DEBUG_MODE = true
+DEBUG_MODE = false
 
 function love.load()
     love.graphics.setFont(gFonts['medium'])
@@ -43,6 +43,8 @@ function love.load()
     }
     gStateMachine:change('start')
 
+    gSounds['victory']:setLooping(false)
+    gSounds['victory']:setVolume(1.0)
     gSounds['music']:setLooping(true)
     gSounds['music']:setVolume(0.5)
     if not DEBUG_MODE then

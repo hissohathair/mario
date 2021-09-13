@@ -21,6 +21,9 @@ VIRTUAL_HEIGHT = 144
 -- global standard tile size
 TILE_SIZE = 16
 
+-- flags are taller
+FLAGPOLE_HEIGHT = 48
+
 -- width and height of screen in tiles
 SCREEN_TILE_WIDTH = VIRTUAL_WIDTH / TILE_SIZE
 SCREEN_TILE_HEIGHT = VIRTUAL_HEIGHT / TILE_SIZE

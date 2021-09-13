@@ -10,7 +10,7 @@ PlayState = Class{__includes = BaseState}
 function PlayState:init()
     self.camX = 0
     self.camY = 0
-    self.level = LevelMaker.generate(100, 10)
+    self.level = LevelMaker.generate(DEBUG_MODE and 40 or 100, 10)
     self.tileMap = self.level.tileMap
     self.background = math.random(3)
     self.backgroundX = 0
@@ -24,6 +24,7 @@ function PlayState:init()
 
     -- make sure player doesn't spawn over a chasm. Only need to check the
     -- lowest tile, which is always empty for a chasm
+
     local x, y = 1, self.level.tileMap.height
     while self.level.tileMap.tiles[y][x].id ~= TILE_ID_GROUND do
         x = x + 1
@@ -47,6 +48,13 @@ function PlayState:init()
     self:spawnEnemies()
 
     self.player:changeState('falling')
+end
+
+function PlayState:enter(params)
+    -- TODO: Restart music, b/c we stop it when level completed
+    if not DEBUG_MODE and not gSounds['music']:isPlaying() then
+        gSounds['music']:play()
+    end
 end
 
 function PlayState:update(dt)
@@ -99,8 +107,8 @@ function PlayState:render()
 
     -- render key if player has it
     if self.player.key > 0 then
-        love.graphics.draw(gTextures['keys-and-locks'], gFrames['keys'][self.player.key],
-            VIRTUAL_WIDTH - 64, 1)
+        love.graphics.draw(gTextures['keys-and-locks'], gFrames['keys-and-locks'][self.player.key],
+            VIRTUAL_WIDTH - 32, 1)
     end
 end
 

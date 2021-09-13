@@ -26,6 +26,68 @@ function LevelMaker.generate(width, height)
     local lockExists = false
     local lockColor = math.random(1, #KEYS_AND_LOCKS)
 
+    -- Create a flagpole object. It will be inserted later when the player
+    -- unlocks the lock box. Code below will make sure no chasms exist at
+    -- width - 2
+
+    local flagX = width - 2
+    local flagY = 6
+
+    -- This will be the "goal flag"
+    local flagpole = GameObject {
+        texture = 'poles',
+        x = (flagX - 1) * TILE_SIZE,
+        y = flagY * TILE_SIZE - FLAGPOLE_HEIGHT,
+        width = TILE_SIZE, height = FLAGPOLE_HEIGHT,
+        frame = 2 + lockColor,
+        collidable = false,
+        consumable = true,
+        solid = false,
+        hit = false,
+
+        onConsume = function(player, flagpole)
+            gSounds['music']:stop()
+            gSounds['victory']:stop() -- rewinds
+            gSounds['victory']:play()
+
+            -- consumable objects get removed, so put back a new flagpole
+            newpole = GameObject(flagpole) 
+            newpole.consumable = false
+            newpole.hit = true
+            table.insert(objects, newpole)
+
+            -- add a flag that ascends the mast
+            local flagFrame = (lockColor - 1) * 3 + 1
+            print(string.format("DEBUG: loclColor = %d, flagFrame = %d", lockColor, flagFrame))
+            local flag = GameObject {
+                texture = 'flags',
+                animation = Animation {
+                                frames = { flagFrame, flagFrame + 1 },
+                                interval = 0.25
+                            },
+                x = flagpole.x + TILE_SIZE / 2,
+                y = flagpole.y + flagpole.height - TILE_SIZE,
+                width = TILE_SIZE,
+                height = TILE_SIZE,
+                collidable = false,
+                solid = false
+            }
+            table.insert(objects, flag)
+
+            Timer.tween(0.66, {
+                [flag] = { y = flagpole.y + TILE_SIZE / 3 }
+            })
+
+            -- In a few seconds, go to next level
+            Timer.after(4.0, function() 
+                gStateMachine:change('play')
+            end)
+            
+
+        end
+    }
+
+
     -- insert blank tables into tiles for later access
     for x = 1, height do
         table.insert(tiles, {})
@@ -41,8 +103,10 @@ function LevelMaker.generate(width, height)
                 Tile(x, y, tileID, nil, tileset, topperset))
         end
 
-        -- chance to just be emptiness (chasm)
-        if math.random(7) == 1 then
+        -- chance to just be emptiness (chasm), but never at the end of the
+        -- level, because we want to put the goal flag there
+
+        if x < width - 4 and math.random(7) == 1 then
             for y = 7, height do
                 table.insert(tiles[y],
                     Tile(x, y, tileID, nil, tileset, topperset))
@@ -59,7 +123,7 @@ function LevelMaker.generate(width, height)
             end
 
             -- chance to generate a pillar
-            if math.random(8) == 1 then
+            if x < width - 4 and math.random(8) == 1 then
                 blockHeight = 2
                 
                 -- chance to generate bush on pillar
@@ -100,12 +164,13 @@ function LevelMaker.generate(width, height)
             end
 
             -- chance to spawn a block
-            if math.random(10) == 1 then
+            if x < width - 4 and math.random(10) == 1 then
 
                 -- where to place the block, etc.
                 local blockX = (x - 1) * TILE_SIZE
                 local blockY = (blockHeight - 1) * TILE_SIZE
                 local newObject = nil
+
                 if lockExists or math.random(5) > 1 then
 
                     -- jump block
@@ -186,16 +251,21 @@ function LevelMaker.generate(width, height)
                             -- If player has key, and hasn't hit this box already, 
                             -- flag will spawn
                             if player.key == lockColor and not obj.hit then
-                                -- TODO: spawn actual flag and make block disappear
+                                -- make it so we can't hit this block any more
                                 obj.hit = true
                                 obj.collidable = false
                                 obj.solid = false
+                                gSounds['achievement']:stop()
                                 gSounds['achievement']:play()
 
                                 -- make block fade away
                                 Timer.tween(0.66, {
                                         [obj] = {alpha = 0}
                                     })
+
+                                -- Spawn the goal flagpole now
+                                table.insert(objects, flagpole)
+
                             else
                                 gSounds['empty-block']:play()
                             end
@@ -237,7 +307,7 @@ function LevelMaker.generate(width, height)
             consumable = true,
             solid = false,
 
-            onConsume = function(player, object)
+            onConsume = function(player, key)
                 gSounds['pickup']:play()
                 player.key = lockColor
             end
