@@ -9,7 +9,7 @@ Assignment:
 1. ~~When the player is dropped into the level, ensure they’re always above solid ground.~~
 2. Generate a random-colored key and lock block. The key should unlock the block when the player collides with it, triggering the block to disappear.
 3. ~~Once the lock has disappeared, trigger a goal post to spawn at the end of the level.~~
-4. ~~When the player touches this goal post, regenerate the level, and restart.~~ The new level should be a little longer than before.
+4. ~~When the player touches this goal post, regenerate the level, and restart. The new level should be a little longer than before.~~
 
 
 # Playing
@@ -28,6 +28,12 @@ Keys:
 ![Title screen](images/titlescreen.png)
 
 ![Not spawning over a chasm](images/spawn1.png)
+
+![Lock and key](images/lockandkey.png)
+
+![Flagpole goal post](images/flaggoal.png)
+
+![Level 2](images/level2.png)
 
 
 # Game Notes
@@ -48,4 +54,4 @@ Keys:
 
 * Most of this code was written [by Colton Ogden](https://cs50.harvard.edu/games/2018/projects/4/mario/) for the [CS50G EdX course](https://learning.edx.org/course/course-v1:HarvardX+CS50G+Games/home)
 * Using [boon](https://github.com/camchenry/boon) to package releases
-* Additional sound effects created with [Bfxr](https://www.bfxr.net/)
+* Additional sound effects from [OpenGameArt](https://opengameart.org/content/victory)

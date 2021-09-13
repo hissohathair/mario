@@ -22,7 +22,8 @@
 love.graphics.setDefaultFilter('nearest', 'nearest')
 require 'src/Dependencies'
 
-DEBUG_MODE = false
+DEBUG_MODE = true
+gPlayMusic = not DEBUG_MODE -- don't play by default when DEBUG_MODE on
 
 function love.load()
     love.graphics.setFont(gFonts['medium'])
@@ -47,7 +48,7 @@ function love.load()
     gSounds['victory']:setVolume(1.0)
     gSounds['music']:setLooping(true)
     gSounds['music']:setVolume(0.5)
-    if not DEBUG_MODE then
+    if gPlayMusic then
         gSounds['music']:play()
     end
 
@@ -77,8 +78,10 @@ function love.update(dt)
     if love.keyboard.wasPressed('m') then
         if gSounds['music']:isPlaying() then
             gSounds['music']:pause()
+            gPlayMusic = false
         else
             gSounds['music']:play()
+            gPlayMusic = true
         end
     end
 

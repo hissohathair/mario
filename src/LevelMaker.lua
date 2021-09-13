@@ -10,7 +10,7 @@
 
 LevelMaker = Class{}
 
-function LevelMaker.generate(width, height)
+function LevelMaker.generate(width, height, levelNum)
     local tiles = {}
     local entities = {}
     local objects = {}
@@ -58,7 +58,6 @@ function LevelMaker.generate(width, height)
 
             -- add a flag that ascends the mast
             local flagFrame = (lockColor - 1) * 3 + 1
-            print(string.format("DEBUG: loclColor = %d, flagFrame = %d", lockColor, flagFrame))
             local flag = GameObject {
                 texture = 'flags',
                 animation = Animation {
@@ -80,7 +79,11 @@ function LevelMaker.generate(width, height)
 
             -- In a few seconds, go to next level
             Timer.after(6.0, function() 
-                gStateMachine:change('play')
+                gStateMachine:change('play', {
+                    score = player.score,
+                    width = width * 1.2,
+                    levelNum = levelNum + 1
+                })
             end)
             
 
@@ -318,6 +321,6 @@ function LevelMaker.generate(width, height)
     if lockExists and entities and objects and map then
         return GameLevel(entities, objects, map)
     else
-        return LevelMaker.generate(width, height)
+        return LevelMaker.generate(width, height, levelNum)
     end
 end

@@ -12,7 +12,7 @@ Player = Class{__includes = Entity}
 
 function Player:init(def)
     Entity.init(self, def)
-    self.score = 0
+    self.score = def.score or 0
     self.key = 0  -- keys are numbered 1..4, 0 means "no key"
 end
 

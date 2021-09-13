@@ -8,16 +8,36 @@
 PlayState = Class{__includes = BaseState}
 
 function PlayState:init()
+
+    -- defaults used for first level
+    self.levelWidth = DEBUG_MODE and 50 or 100
+    self.levelHeight = 10
+    self.levelNumber = 1
+
+    -- rest of PlayState is set on `enter`
+end
+
+function PlayState:enter(params)
+
+    -- override defaults if params passed
+    if params then
+        self.levelWidth = params.width or self.levelWidth
+        self.levelHeight = params.height or self.levelHeight
+        self.levelNumber = params.levelNum or self.levelNumber
+        self.playerScore = params.score or self.playerScore
+    end
+
+    -- reset for each level
     self.camX = 0
     self.camY = 0
-    self.level = LevelMaker.generate(DEBUG_MODE and 40 or 100, 10)
+    self.level = LevelMaker.generate(self.levelWidth, self.levelHeight, self.levelNumber)
     self.tileMap = self.level.tileMap
     self.background = math.random(3)
     self.backgroundX = 0
 
     -- player dimensions
-    self.width = 16
-    self.height = 20
+    self.playerWidth = 16
+    self.playerHeight = 20
 
     self.gravityOn = true
     self.gravityAmount = 6
@@ -33,7 +53,7 @@ function PlayState:init()
 
     self.player = Player({
         x = firstX, y = 0,
-        width = self.width, height = self.height,
+        width = self.playerWidth, height = self.playerHeight,
         texture = 'alien',
         stateMachine = StateMachine {
             ['idle'] = function() return PlayerIdleState(self.player) end,
@@ -42,17 +62,17 @@ function PlayState:init()
             ['falling'] = function() return PlayerFallingState(self.player, self.gravityAmount) end
         },
         map = self.tileMap,
-        level = self.level
+        level = self.level,
+        score = self.playerScore
     })
 
     self:spawnEnemies()
 
     self.player:changeState('falling')
-end
 
-function PlayState:enter(params)
+
     -- TODO: Restart music, b/c we stop it when level completed
-    if not DEBUG_MODE and not gSounds['music']:isPlaying() then
+    if gPlayMusic then
         gSounds['music']:play()
     end
 end
@@ -104,6 +124,19 @@ function PlayState:render()
     love.graphics.print(tostring(self.player.score), 5, 5)
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.print(tostring(self.player.score), 4, 4)
+
+    -- render level and progress
+    love.graphics.setFont(gFonts['small'])
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.rectangle('line', VIRTUAL_WIDTH * 0.25 + 1, 5, VIRTUAL_WIDTH * 0.5, 8)
+    love.graphics.print(string.format("Level %d", self.levelNumber), VIRTUAL_WIDTH / 2 - 17, 5)
+    love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
+    love.graphics.rectangle('fill', VIRTUAL_WIDTH * 0.25, 4, 
+        (VIRTUAL_WIDTH * 0.5) * math.min(self.player.x / TILE_SIZE / (self.levelWidth - 4), 1.0), 8)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.rectangle('line', VIRTUAL_WIDTH * 0.25, 4, VIRTUAL_WIDTH * 0.5, 8)
+    love.graphics.print(string.format("Level %d", self.levelNumber), VIRTUAL_WIDTH / 2 - 16, 4)
+
 
     -- render key if player has it
     if self.player.key > 0 then
