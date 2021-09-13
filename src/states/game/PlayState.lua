@@ -130,7 +130,7 @@ function PlayState:render()
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.rectangle('line', VIRTUAL_WIDTH * 0.25 + 1, 5, VIRTUAL_WIDTH * 0.5, 8)
     love.graphics.print(string.format("Level %d", self.levelNumber), VIRTUAL_WIDTH / 2 - 17, 5)
-    love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
+    love.graphics.setColor(0.3, 0.3, 0.3, 0.66)
     love.graphics.rectangle('fill', VIRTUAL_WIDTH * 0.25, 4, 
         (VIRTUAL_WIDTH * 0.5) * math.min(self.player.x / TILE_SIZE / (self.levelWidth - 4), 1.0), 8)
     love.graphics.setColor(1, 1, 1, 1)

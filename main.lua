@@ -22,7 +22,7 @@
 love.graphics.setDefaultFilter('nearest', 'nearest')
 require 'src/Dependencies'
 
-DEBUG_MODE = true
+DEBUG_MODE = false
 gPlayMusic = not DEBUG_MODE -- don't play by default when DEBUG_MODE on
 
 function love.load()
