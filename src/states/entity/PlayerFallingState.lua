@@ -71,7 +71,7 @@ function PlayerFallingState:update(dt)
                     self.player:changeState('idle')
                 end
             elseif object.consumable then
-                object.onConsume(self.player)
+                object.onConsume(self.player, object)
                 table.remove(self.player.level.objects, k)
             end
         end

@@ -65,7 +65,7 @@ function PlayerJumpState:update(dt)
                 self.player.dy = 0
                 self.player:changeState('falling')
             elseif object.consumable then
-                object.onConsume(self.player)
+                object.onConsume(self.player, object)
                 table.remove(self.player.level.objects, k)
             end
         end

@@ -51,7 +51,7 @@ function LevelMaker.generate(width, height)
             gSounds['victory']:play()
 
             -- consumable objects get removed, so put back a new flagpole
-            newpole = GameObject(flagpole) 
+            newpole = GameObject(flagpole)
             newpole.consumable = false
             newpole.hit = true
             table.insert(objects, newpole)
@@ -79,7 +79,7 @@ function LevelMaker.generate(width, height)
             })
 
             -- In a few seconds, go to next level
-            Timer.after(4.0, function() 
+            Timer.after(6.0, function() 
                 gStateMachine:change('play')
             end)
             

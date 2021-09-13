@@ -30,11 +30,19 @@ Keys:
 ![Not spawning over a chasm](images/spawn1.png)
 
 
-# Bugs and Notes
+# Game Notes
+
+## Known Bugs
+
+* ~~There's a bug that causes the game to crash when the player jumps *onto* a flagpole instead of walking up to it~~ (Fixed)
+* Collision detection is slightly off still -- player has trouble falling or jumping through gaps that *should* be just wide enough
+* Level generation occassionally creates uncompleteable levels, because a pillar makes a lock box inaccessible for example
+
+## Notes and "todo" items
 
 * Debug mode is turned on by setting `DEBUG_MODE` to `true` in [main.lua](main.lua)
-* Collision detection is slightly off still -- player has trouble falling through gaps that *should* be just wide enough
-* Level generation occassionally creates uncompleteable levels, because a pillar makes a lock box inaccessible for example
+* Would like for the camera to pan over to where the flagpole goal is spawning so the player knows what it means to "unlock" a locked box
+
 
 # Credits
 
