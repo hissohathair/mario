@@ -128,13 +128,19 @@ function PlayState:render()
     -- render level and progress
     love.graphics.setFont(gFonts['small'])
     love.graphics.setColor(0, 0, 0, 1)
-    love.graphics.rectangle('line', VIRTUAL_WIDTH * 0.25 + 1, 5, VIRTUAL_WIDTH * 0.5, 8)
+    -- outline shadow and level number shadow
+    love.graphics.rectangle('line', VIRTUAL_WIDTH * 0.25 + 1, 5, VIRTUAL_WIDTH * 0.5, 8, 4, 4)
     love.graphics.print(string.format("Level %d", self.levelNumber), VIRTUAL_WIDTH / 2 - 17, 5)
-    love.graphics.setColor(0.3, 0.3, 0.3, 0.66)
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH * 0.25, 4, 
-        (VIRTUAL_WIDTH * 0.5) * math.min(self.player.x / TILE_SIZE / (self.levelWidth - 4), 1.0), 8)
+    -- progress infill
+    local progress = math.min(self.player.x / TILE_SIZE / (self.levelWidth - 4), 1.0)
+    if progress > 0.01 then
+        love.graphics.setColor(0.3, 0.3, 0.3, 0.66)
+        love.graphics.rectangle('fill', VIRTUAL_WIDTH * 0.25, 4, 
+            (VIRTUAL_WIDTH * 0.5) * progress, 8, 4, 4)
+    end
+    -- top outline and level number
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.rectangle('line', VIRTUAL_WIDTH * 0.25, 4, VIRTUAL_WIDTH * 0.5, 8)
+    love.graphics.rectangle('line', VIRTUAL_WIDTH * 0.25, 4, VIRTUAL_WIDTH * 0.5, 8, 4, 4)
     love.graphics.print(string.format("Level %d", self.levelNumber), VIRTUAL_WIDTH / 2 - 16, 4)
 
 
